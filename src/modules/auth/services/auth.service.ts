@@ -1,8 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { User} from '../common/entities/user.entity'
+import { Injectable, UnauthorizedException  } from "@nestjs/common";
+import { User } from '../common/entities/user.entity';
 import { Repository } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -14,14 +13,32 @@ export class AuthService {
     ) {
     }
 
-    async validateUser(username: string, pass: string): Promise<any> {
-        const user = await this.userRepository.findOne({ where: { username, status: 1 } });
-
-        if (user && await bcrypt.compare(pass, user.password)) {
-            const { password, ...result } = user;
-            return result;
+    async validateUser(username: string, password: string): Promise<User | null> {
+        const user = await this.userRepository.findOne({ where: { username } });
+        if (!user) {
+            return null;
         }
-        return null;
+
+        if (user.password === password) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
+
+
+    async signIn(username: string, password: string): Promise<string> {
+        const user = await this.validateUser(username, password);
+        if (!user) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        return 'Login successful';
+    }
+
+    async findAllUsers() {
+        return await this.userRepository.find();
     }
 
 

@@ -1,13 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import ormConfig from "../../config/orm.config";
 import { JwtModule } from "@nestjs/jwt";
-import { Alumno } from "../students/common/entities/students.entity";
-import { CoursesController } from "./controllers/courses.controller";
-import { CoursesService } from "./services/courses.service";
-import { Curso } from "./common/entities/courses.entity";
-
+import { Alumno } from "./common/entities/students.entity";
+import { StudentsService } from "./services/students.service";
+import ormConfig from '../../config/orm.config';
+import { StudentsController } from "./controllers/students.controller";
 
 
 @Module({
@@ -18,11 +16,12 @@ import { Curso } from "./common/entities/courses.entity";
             secret: process.env.JWT_SECRET,
             signOptions: {expiresIn: process.env.JWT_EXPIRES_IN},
         }),
-        TypeOrmModule.forFeature([Curso]),
+        TypeOrmModule.forFeature([Alumno]),
 
     ],
-    controllers: [CoursesController],
-    providers: [CoursesService],
+    controllers: [StudentsController],
+    providers: [StudentsService],
+
 })
 
-export class CoursesModule {}
+export class StudentsModule {}

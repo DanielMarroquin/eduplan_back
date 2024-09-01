@@ -1,7 +1,6 @@
 import { ApiTags } from "@nestjs/swagger";
-import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, HttpException, HttpStatus, Post, Get } from "@nestjs/common";
 import { AuthService } from "../services/auth.service";
-import { Public } from "../../../common/decorators/metadata.decorator";
 
 
 @ApiTags('Autenticación')
@@ -15,22 +14,11 @@ export class AuthController {
 
 
     @Post('sign-in')
-    async signIn (@Body() loginDto: { username: string; password: string }) {
-
-        try {
-            const user = await this.authService.validateUser(loginDto.username, loginDto.password);
-            if (!user) {
-                throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-            }
-            return {
-                message: 'Login successful',
-                user,
-            };
-
-        } catch (err) {
-            throw new Error(err)
-        }
+    async login(@Body() body: { username: string; password: string }): Promise<string> {
+        const { username, password } = body;
+        return this.authService.signIn(username, password);
     }
+
 
 
 
