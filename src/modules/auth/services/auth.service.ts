@@ -28,14 +28,18 @@ export class AuthService {
 
 
 
-    async signIn(username: string, password: string): Promise<string> {
+    async signIn(username: string, password: string): Promise<{ message: string, success: boolean }> {
         const user = await this.validateUser(username, password);
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        return 'Login successful';
+        return {
+            message: 'Login successful',
+            success: true
+        };
     }
+
 
     async findAllUsers() {
         return await this.userRepository.find();

@@ -8,13 +8,13 @@ import { AuthService } from "../services/auth.service";
 
 export class AuthController {
     constructor(
-        private authService: AuthService
+        private readonly authService: AuthService
     ) {
     }
 
 
     @Post('sign-in')
-    async login(@Body() body: { username: string; password: string }): Promise<string> {
+    async login(@Body() body: { username: string; password: string }): Promise<{ message: string; success: boolean }> {
         const { username, password } = body;
         return this.authService.signIn(username, password);
     }
