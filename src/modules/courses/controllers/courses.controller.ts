@@ -27,7 +27,7 @@ export class CoursesController {
     @Post('delete/:id')
     async deleteStudent(@Param('id') id: number): Promise<void> {
         try {
-            await this.coursesService.deleteStudent(id);
+            await this.coursesService.deleteCourse(id);
         } catch (error) {
             if (error.message === 'Student not found') {
                 throw new NotFoundException('Student not found');

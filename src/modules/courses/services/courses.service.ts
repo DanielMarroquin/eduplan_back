@@ -25,8 +25,8 @@ export class CoursesService {
 
 
     async create(createAlumnoDto: any): Promise<Curso[]> {
-        const newAlumno = this.coursesRepository.create(createAlumnoDto);
-        return await this.coursesRepository.save(newAlumno);
+        const newCourse = this.coursesRepository.create(createAlumnoDto);
+        return await this.coursesRepository.save(newCourse);
     }
 
     async update(id: number, updateAlumnoDto: any): Promise<Curso> {
@@ -35,15 +35,15 @@ export class CoursesService {
     }
 
 
-    async deleteStudent(id: number): Promise<void> {
-        const student = await this.coursesRepository.findOneBy({ id });
+    async deleteCourse(id: number): Promise<void> {
+        const data = await this.coursesRepository.findOneBy({ id });
 
-        if (!student) {
+        if (!data) {
             throw new Error('Student not found');
         }
 
-        student.status = 0;
-        await this.coursesRepository.save(student);
+        data.status = 0;
+        await this.coursesRepository.save(data);
     }
 
 

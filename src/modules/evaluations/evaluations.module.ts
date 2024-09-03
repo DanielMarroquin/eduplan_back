@@ -3,6 +3,9 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import ormConfig from "../../config/orm.config";
 import { JwtModule } from "@nestjs/jwt";
+import { EvaluationController } from "./controllers/evaluation.controller";
+import { EvaluationsService } from "./services/evaluations.service";
+import { Evaluacion } from "./common/entities/evaluations.entity";
 
 
 @Module({
@@ -13,13 +16,13 @@ import { JwtModule } from "@nestjs/jwt";
             secret: process.env.JWT_SECRET,
             signOptions: {expiresIn: process.env.JWT_EXPIRES_IN},
         }),
-        TypeOrmModule.forFeature([]),
+        TypeOrmModule.forFeature([Evaluacion]),
 
 
     ],
 
-    controllers: [],
-    providers: []
+    controllers: [EvaluationController],
+    providers: [EvaluationsService]
 })
 
 export class EvaluationsModule {}
